@@ -15,6 +15,14 @@ A menu bar task scheduler for macOS. Each task is a workflow of actions that run
 - **Task management**: groups, search, sorting, multiple selection, duplicate, enable/disable from the list, export and import as JSON (imported tasks start disabled), delete with confirmation. Notifications: always, errors only (default) or never.
 - 43 languages.
 
+## When tasks run
+
+Cron is a regular app, not a system service. Tasks run only while Cron is running and you are logged in.
+
+- Turn on **Open at login** in Settings → Background, so Cron starts with your session.
+- Cron does not wake the Mac. A scheduled time missed while the Mac was asleep or Cron was not running is handled by the task's **When a scheduled time is missed** setting: **Run once when possible** (default) or **Skip**.
+- Events (folders, network, power, …) that happen while Cron is not running are not delivered later.
+
 ## Requirements
 
 - macOS 15.0 or later, Apple Silicon or Intel (universal build).
@@ -22,7 +30,7 @@ A menu bar task scheduler for macOS. Each task is a workflow of actions that run
 
 ## Build
 
-**Xcode:** create `Local.xcconfig` next to `Signing.xcconfig` with your team (`DEVELOPMENT_TEAM = ABCDE12345`; the file is not committed), open `Cron.xcodeproj` and run. Without a team, choose *Sign to Run Locally* under *Signing & Capabilities*.
+**Xcode:** create `Local.xcconfig` next to `Signing.xcconfig` with your team (`DEVELOPMENT_TEAM = ABCDE12345`; the file is not committed), open `Cron.xcodeproj` and run. Without a team, Xcode signs the app to run locally.
 
 **Command line** (builds Release and installs into `/Applications`):
 
@@ -38,6 +46,7 @@ To share a ready-built app with other people, sign it with a Developer ID certif
 
 Some actions need macOS permissions. The Settings window shows their status and opens the right System Settings pane:
 
+- Background items (to open Cron at login)
 - Automation (AppleScript, controlling other apps)
 - Accessibility
 - Screen Recording (screenshots)
@@ -48,6 +57,7 @@ Some actions need macOS permissions. The Settings window shows their status and 
 
 - Cron is **not sandboxed**: it runs shell scripts and controls other apps with your user's privileges. Only run workflows you understand. For the same reason it cannot be distributed through the Mac App Store.
 - Tasks and run history are stored in `~/Library/Application Support/Cron/`.
+- Passwords, tokens and other values you type into tasks (script environment, HTTP headers, URLs) are stored as plain text in that database and are included in exported task files. Do not share exports that contain them.
 - Tests: `xcodebuild test -scheme Cron` (Swift Testing) and `python3 Tools/run_comprehensive_tests.py` (static checks: action catalog, localizations, project settings).
 
 ## License
