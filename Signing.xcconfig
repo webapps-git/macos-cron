@@ -1,0 +1,8 @@
+// Code signing. Put your Apple developer team in Local.xcconfig next to this file
+// (it is not committed), for example:
+//
+//     DEVELOPMENT_TEAM = ABCDE12345
+//
+// Without it, build with ad hoc signing: CRON_ADHOC=1 ./build.sh
+
+#include? "Local.xcconfig"
